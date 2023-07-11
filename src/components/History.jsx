@@ -4,6 +4,7 @@ import { deleteStory } from "../features/story/storySlice";
 import './History.css';
 
 function History() {
+  const profile = useSelector((state) => state.profile.profile);
   const stories = useSelector((state) => state.story.stories);
   const dispatch = useDispatch();
 
@@ -23,7 +24,7 @@ function History() {
                     __html: story.text.replace(/\n/g, "<br>"),
                   }}
                 /> <br /> */}
-                <div style={{ whiteSpace: "pre-wrap" }}>{story.text}</div>
+                <div lang={profile.lang} style={{ whiteSpace: "pre-wrap", textAlign: 'left', hyphens: 'auto', wordWrap: 'break-word', wordBreak: 'break-all' }}>{story.text}</div>
                 <div className='story-date'>
                     <b>{story.date}</b> <br />
                     <button

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     profile: {
         id: 1,
+        lang: 'en',
         nickname: "Anonymous",
         theme: "black",
         start: "main",

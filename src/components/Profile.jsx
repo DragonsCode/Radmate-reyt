@@ -8,7 +8,42 @@ function Profile() {
   const profile = useSelector((state) => state.profile.profile);
   const stories = useSelector((state) => state.story.stories);
 
+  const [dropped, setDropped] = useState(false);
+
   const dispatch = useDispatch();
+
+  function handleTheme() {
+    const dropdownOptions = document.getElementsByClassName('dropdown-options');
+    if (dropped) {
+      for (let i = 0; i < dropdownOptions.length; i++) {
+        dropdownOptions[i].style.display = 'none';
+        dropdownOptions[i].style.position = 'absolute';
+      };
+      setDropped(!dropped);
+    }
+    else {
+      for (let i = 0; i < dropdownOptions.length; i++) {
+        dropdownOptions[i].style.display = 'block';
+        dropdownOptions[i].style.position = 'relative';
+      };
+      setDropped(!dropped);
+    }
+  }
+
+  function handleSysytemTheme() {
+    dispatch(changeTheme("system"));
+    handleTheme();
+  };
+
+  function handleBlackTheme() {
+    dispatch(changeTheme("black"));
+    handleTheme();
+  };
+
+  function handleLightTheme() {
+    dispatch(changeTheme("light"));
+    handleTheme();
+  };
 
   function handleStartProfile() {
     dispatch(changeStart("profile"));
@@ -20,6 +55,42 @@ function Profile() {
 
   function handleNotifications(ev) {
     dispatch(changeNotifications(ev.target.checked));
+  };
+
+  function showThemes() {
+    if (profile.theme === "system") {
+      return (
+      <div className="dropdown-options">
+        <button onClick={handleBlackTheme}>Black</button>
+        <button onClick={handleLightTheme}>Light</button>
+      </div>
+      )
+    }
+    else if (profile.theme === "black") {
+      return (
+        <div className="dropdown-options">
+          <button onClick={handleSysytemTheme}>System</button>
+          <button onClick={handleLightTheme}>Light</button>
+        </div>
+      )
+    }
+    else if (profile.theme === "light") {
+      return (
+        <div className="dropdown-options">
+          <button onClick={handleSysytemTheme}>System</button>
+          <button onClick={handleBlackTheme}>Black</button>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="dropdown-options">
+          <button onClick={handleSysytemTheme}>System</button>
+          <button onClick={handleBlackTheme}>Black</button>
+          <button onClick={handleLightTheme}>Light</button>
+        </div>
+      )
+    }
   }
 
   return (
@@ -28,17 +99,13 @@ function Profile() {
       <div className="profile-info">
         <img id="avatar" src="/default.jpg" />
         <b className="nickname">{profile.nickname}</b> <br />
-        <span className="storiesnum">Stories number: {stories.length}</span>
+        <span className="storiesnum gray">Stories number: {stories.length}</span>
       </div>
       <div className="theme">
         <span className="gray">Theme</span>
         <div class="dropdown">
-          <button className="theme-button">{profile.theme}</button>
-          <div className="dropdown-options">
-            <button>System</button>
-            <button>Black</button>
-            <button>Light</button>
-          </div>
+          <button className="theme-button" id="theme-button" onClick={handleTheme}>{profile.theme}</button>
+          {showThemes()}
         </div>
       </div>
       <div className="start-screen">
